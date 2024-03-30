@@ -1,16 +1,14 @@
 import cors from 'cors'
 import express from 'express'
-import {HTTP_STATUSES, SETTINGS} from "./settings";
-import {setDB} from "./db/db";
+import {SETTINGS} from "./settings";
+import {videosRouter} from "./input-output-types/videos";
 
 export const app = express()
 app.use(express.json())
 app.use(cors())
 
-app.get(SETTINGS.PATH.VIDEOS, (req, res) => {
-    res.status(HTTP_STATUSES.OK_200).json({test: 'Ok'})
-})
+app.use(SETTINGS.PATH.VIDEOS, videosRouter)
 
 // app.delete('/testing/all-data',(req, res)=>{
-//     setDB()
+//
 // })

@@ -9,6 +9,3 @@ app.use(cors())
 
 app.use(SETTINGS.PATH.VIDEOS, videosRouter)
 
-// app.delete('/testing/all-data',(req, res)=>{
-//
-// })

@@ -9,7 +9,7 @@ export enum Resolutions {
     P2160 = "P2160",
 }
 
-export type ResolutionsString = keyof typeof Resolutions
+// export type ResolutionsString = keyof typeof Resolutions
 
 export type OutputVideoType = {
     id: number,

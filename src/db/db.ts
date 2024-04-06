@@ -1,5 +1,7 @@
+import {VideoDBType} from "./video-db-type";
+
 export type DBType = {
-    videos: any[]
+    videos: VideoDBType[]
 }
 
 export const db: DBType = {

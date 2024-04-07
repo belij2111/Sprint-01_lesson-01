@@ -4,6 +4,7 @@ import {InputVideoType, OutputVideoType, Resolutions} from "../input-output-type
 import {db} from "../db/db";
 import {OutputErrorsType} from "../input-output-types/output-errors-type";
 import {VideoDBType} from "../db/video-db-type";
+import {generateUniqueID, timeInMs} from "../helpers";
 
 const inputValidation = (video: InputVideoType) => {
     const errors: OutputErrorsType = {
@@ -28,14 +29,14 @@ const inputValidation = (video: InputVideoType) => {
     return errors
 }
 
-// export type ParamType = {
-//     id: string
-// }
-//
-// export type BodyType = {
-//     id: number
-//     title: string
-// }
+export type ParamType = {
+    id: string
+}
+
+export type BodyType = {
+    id: number
+    title: string
+}
 //
 // export type QyeryType = {
 //     search?: string
@@ -53,15 +54,13 @@ export const createVideoController = (req: Request<any, any, InputVideoType>, re
         return
     }
 
-    const timeInMs = Date.now() + 1000 * 60 * 60 * 24
-
     const newVideo: VideoDBType = {
         ...req.body,
-        id: Date.now() + Math.random(),
+        id: generateUniqueID(),
         canBeDownloaded: false,
         minAgeRestriction: null,
         createdAt: new Date(Date.now()).toISOString(),
-        publicationDate: new Date(timeInMs).toISOString(),
+        publicationDate: new Date(timeInMs()).toISOString(),
     }
     db.videos = [...db.videos, newVideo]
 

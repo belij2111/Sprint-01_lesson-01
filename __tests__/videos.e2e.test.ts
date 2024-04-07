@@ -77,7 +77,21 @@ describe('/videos', () => {
             .get(SETTINGS.PATH.VIDEOS + '/-100')
             .expect(HTTP_STATUSES.NOT_FOUND_404)
         console.log(res.body)
+    });
 
+    it(`should delete video by id`, async () => {
+        setDB(dataset1)
+        const res = await req
+            .delete(SETTINGS.PATH.VIDEOS + '/' + dataset1.videos[0].id)
+            .expect(HTTP_STATUSES.NO_CONTENT_204)
+        console.log(res.body)
+    });
 
+    it(`should't delele video by id`, async () => {
+        setDB(dataset1)
+        const res = await req
+            .delete(SETTINGS.PATH.VIDEOS + '/-100')
+            .expect(HTTP_STATUSES.NOT_FOUND_404)
+        console.log(res.body)
     });
 })

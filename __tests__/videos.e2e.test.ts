@@ -6,10 +6,10 @@ import {InputVideoType, Resolutions} from "../src/input-output-types/video-types
 
 describe('/videos', () => {
     beforeAll(async () => {
-        // await req.delete('/testing/all-data')
+        await req.delete('/testing/all-data')
     })
 
-    it('should get empty array', async () => {
+    it(`should get empty array`, async () => {
         setDB()
         const res = await req
             .get(SETTINGS.PATH.VIDEOS)
@@ -18,7 +18,7 @@ describe('/videos', () => {
         expect(res.body.length).toBe(0)
     });
 
-    it('should get not empty array', async () => {
+    it(`should get not empty array`, async () => {
         setDB(dataset1)
         const res = await req
             .get(SETTINGS.PATH.VIDEOS)
@@ -29,7 +29,7 @@ describe('/videos', () => {
 
     });
 
-    it('should create new video', async () => {
+    it(`should create new video`, async () => {
         setDB()
         const newVideo: InputVideoType = {
             title: 't1',
@@ -41,13 +41,15 @@ describe('/videos', () => {
             .send(newVideo)
             .expect(HTTP_STATUSES.CREATED_201)
         console.log(res.body)
+        expect(res.body.title).toBe(newVideo.title)
+        expect(res.body.author).toBe(newVideo.author)
         expect(res.body.availableResolutions).toEqual(newVideo.availableResolutions)
     });
 
-    it('shouldn\'t create new video with incorrect input data ', async () => {
+    it(`shouldn't create new video with incorrect input data `, async () => {
         setDB()
         const invalidVideo: InputVideoType = {
-            title: "t" ,
+            title: "t",
             author: "a",
             availableResolutions: "invalid" as any
         }
@@ -56,7 +58,26 @@ describe('/videos', () => {
             .send(invalidVideo)
             .expect(HTTP_STATUSES.BAD_REQUEST_400)
         console.log(res.body)
-        // expect(res.body.availableResolutions).toEqual(newVideo.availableResolutions)
+        expect(res.body.availableResolutions).not.toEqual(invalidVideo.availableResolutions)
+        expect(res.body.errorsMessage[0].field).toBe('availableResolutions')
     });
 
+    it(`should return video by id`, async () => {
+        setDB(dataset1)
+        const res = await req
+            .get(SETTINGS.PATH.VIDEOS + '/' + dataset1.videos[0].id)
+            .expect(HTTP_STATUSES.OK_200)
+        console.log(res.body)
+        expect(res.body).toEqual(dataset1.videos[0])
+    });
+
+    it(`shouldn't return video by id`, async () => {
+        setDB(dataset1)
+        const res = await req
+            .get(SETTINGS.PATH.VIDEOS + '/-100')
+            .expect(HTTP_STATUSES.NOT_FOUND_404)
+        console.log(res.body)
+
+
+    });
 })

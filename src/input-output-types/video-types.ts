@@ -27,3 +27,12 @@ export type InputVideoType = {
     author: string,
     availableResolutions: Resolutions[]
 }
+
+export type UpdateVideoType = {
+    title: string,
+    author: string,
+    availableResolutions: Resolutions[],
+    canBeDownloaded: boolean,
+    minAgeRestriction: number,
+    publicationDate: string
+}

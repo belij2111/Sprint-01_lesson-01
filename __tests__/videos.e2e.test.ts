@@ -87,7 +87,7 @@ describe('/videos', () => {
         console.log(res.body)
     });
 
-    it(`should't delele video by id`, async () => {
+    it(`shouldn't delete video by id`, async () => {
         setDB(dataset1)
         const res = await req
             .delete(SETTINGS.PATH.VIDEOS + '/-100')

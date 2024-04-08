@@ -6,27 +6,37 @@ import {OutputErrorsType} from "../input-output-types/output-errors-type";
 
 const inputValidation = (video: UpdateVideoType) => {
     const errors: OutputErrorsType = {
-        errorsMessage: []
+        errorsMessages: []
     }
     if (typeof video.title !== 'string' || video.title.length > 40) {
-        errors.errorsMessage.push({
+        errors.errorsMessages.push({
             message: 'error!!!', field: 'title'
         })
     }
     if (typeof video.author !== 'string' || video.author.length > 20) {
-        errors.errorsMessage.push({
+        errors.errorsMessages.push({
             message: 'error!!!', field: 'author'
         })
     }
     if (!Array.isArray(video.availableResolutions) || video.availableResolutions.find(p => !Resolutions[p])
     ) {
-        errors.errorsMessage.push({
+        errors.errorsMessages.push({
             message: "error!!!", field: 'availableResolutions'
         })
     }
+    if (typeof video.canBeDownloaded !== 'boolean') {
+        errors.errorsMessages.push({
+            message: "error!!!", field: "canBeDownloaded"
+        })
+    }
     if (typeof video.minAgeRestriction !== 'number' || video.minAgeRestriction < 1 || video.minAgeRestriction > 18) {
-        errors.errorsMessage.push({
+        errors.errorsMessages.push({
             message: "error!!!", field: "minAgeRestriction"
+        })
+    }
+    if (typeof video.publicationDate !== 'string') {
+        errors.errorsMessages.push({
+            message: "error!!!", field: "publicationDate"
         })
     }
     return errors
@@ -36,7 +46,7 @@ export const updateVideoController = (req: Request<{
     id: string
 }, any, UpdateVideoType>, res: Response<OutputVideoType | {}>) => {
     const errors = inputValidation(req.body)
-    if (errors.errorsMessage.length) {
+    if (errors.errorsMessages.length) {
         res
             .status(HTTP_STATUSES.BAD_REQUEST_400)
             .json(errors)

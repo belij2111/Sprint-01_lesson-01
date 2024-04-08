@@ -59,7 +59,7 @@ describe('/videos', () => {
             .expect(HTTP_STATUSES.BAD_REQUEST_400)
         console.log(res.body)
         expect(res.body.availableResolutions).not.toEqual(invalidVideo.availableResolutions)
-        expect(res.body.errorsMessage[0].field).toBe('availableResolutions')
+        expect(res.body.errorsMessages[0].field).toBe('availableResolutions')
     });
 
     it(`should return video by id`, async () => {

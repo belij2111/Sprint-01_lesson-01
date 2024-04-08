@@ -6,5 +6,5 @@ export const deleteTestingController = (req:Request,res:Response)=>{
     db.videos=[]
     res
         .status(HTTP_STATUSES.NO_CONTENT_204)
-        .send()
+        .json({message:'Attention the database has been cleared'})
 }
